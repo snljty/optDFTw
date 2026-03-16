@@ -51,7 +51,11 @@ void Omega_optimizer::optimize() {
 
     if (result < 0) throw std::runtime_error("Error: Brent's optimization failed!");
 
+    std::chrono::steady_clock::time_point stable_time_start(std::chrono::steady_clock::now()), stable_time_end;
     if (!check_stable("N-1") || !check_stable("N+1")) throw std::runtime_error("Error: some of the converged wavefunctions are not stable.");
+    stable_time_end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> stable_time_span(std::chrono::duration_cast<std::chrono::duration<double> >(stable_time_end - stable_time_start));
+    fmt::print("Time elapsed for final wavefunction stability analysys: {:.1f} s\n", stable_time_span.count());
 
     fmt::print("Converged. The optimal w is {:.4f}.\n", w_);
     fmt::print("you can use \"IOp(3/107={0:05d}00000,3/108={0:05d}00000)\" in your .gjf file to use this w value.\n", static_cast<int>(std::round(w_ * 1.E4)));
