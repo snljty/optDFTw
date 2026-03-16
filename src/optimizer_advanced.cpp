@@ -9,13 +9,13 @@ double Omega_optimizer::step(double w) {
     generate_input("N");
     generate_input("N-1",  1, 1, num_steps <= stable_rounds);
     generate_input("N+1", -1, 1, num_steps <= stable_rounds);
-    fmt::print("Running Gaussian for state N   ...\n");
+    fmt::print("Running ORCA for state N   ...\n");
     std::fflush(stdout);
     run("N");
-    fmt::print("Running Gaussian for state N-1 ...\n");
+    fmt::print("Running ORCA for state N-1 ...\n");
     std::fflush(stdout);
     run("N-1");
-    fmt::print("Running Gaussian for state N+1 ...\n");
+    fmt::print("Running ORCA for state N+1 ...\n");
     std::fflush(stdout);
     run("N+1");
     fmt::print("Calculating J**2 ...\n");
@@ -58,19 +58,23 @@ void Omega_optimizer::optimize() {
     fmt::print("Time elapsed for final wavefunction stability analysys: {:.1f} s\n", stable_time_span.count());
 
     fmt::print("Converged. The optimal w is {:.4f}.\n", w_);
-    fmt::print("you can use \"IOp(3/107={0:05d}00000,3/108={0:05d}00000)\" in your .gjf file to use this w value.\n", static_cast<int>(std::round(w_ * 1.E4)));
+    fmt::print("you can use \n\"\"\"\n%Method\n    RangeSepMu {:.4f}\nEnd\n\"\"\"\nin your .inp file to use this w value.", w_);
 
-    formchk("N");
-    formchk("N-1");
-    formchk("N+1");
+    format_mkl("N");
+    format_mkl("N-1");
+    format_mkl("N+1");
 
     time_end = std::chrono::steady_clock::now();
     std::chrono::duration<double> time_span(std::chrono::duration_cast<std::chrono::duration<double> >(time_end - time_start));
     fmt::print("Total time elapsed: {:.1f} s\n", time_span.count());
 
-    fmt::ostream ofile(fmt::output_file("result_IOp_w.txt"));
-    ofile.print("IOp(3/107={0:05d}00000,3/108={0:05d}00000)\n", static_cast<int>(std::round(w_ * 1.E4)));
+    fmt::ostream ofile(fmt::output_file("result_option_w.txt"));
+    ofile.print("%Method\n    RangeSepMu {:.4f}\nEnd\n", w_);
     ofile.close();
-    fmt::print("Result has been saved to \"{:s}\".\n", "result_IOp_w.txt");
+    fmt::print("Result has been saved to \"{:s}\".\n", "result_option_w.txt");
+
+    remove_garbage("N");
+    remove_garbage("N-1");
+    remove_garbage("N+1");
 }
 
