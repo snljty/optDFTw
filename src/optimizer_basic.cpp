@@ -21,7 +21,7 @@ void Omega_optimizer::run(const std::string& prefix) const {
     if (!pipe) throw std::ios_base::failure("Error: cannot execute Gaussian.");
 
     char buf[BUFSIZ];
-    while (fgets(buf, sizeof(buf), pipe)) {};
+    while (fgets(buf, sizeof(buf), pipe)) {;}
 
     int status = pclose(pipe);
     if (status == -1) throw std::ios_base::failure("Error: fclose failed.");
@@ -31,7 +31,7 @@ void Omega_optimizer::run(const std::string& prefix) const {
             throw std::ios_base::failure(fmt::format("Error: Gaussian exit status: {:d}.", WEXITSTATUS(status)));
         }
     } else if (WIFSIGNALED(status)) {
-        throw std::ios_base::failure(fmt::format("Error: Gaussian by signal: {:d}.", WTERMSIG(status)));
+        throw std::ios_base::failure(fmt::format("Error: Gaussian killed by signal: {:d}.", WTERMSIG(status)));
     }
     #else
     if (status) {
@@ -49,7 +49,7 @@ void Omega_optimizer::formchk(const std::string& prefix) const {
     if (!pipe) throw std::ios_base::failure("Error: cannot execute Gaussian formchk.");
 
     char buf[BUFSIZ];
-    while (fgets(buf, sizeof(buf), pipe)) {};
+    while (fgets(buf, sizeof(buf), pipe)) {;}
 
     int status = pclose(pipe);
     if (status == -1) throw std::ios_base::failure("Error: fclose failed.");
@@ -59,7 +59,7 @@ void Omega_optimizer::formchk(const std::string& prefix) const {
             throw std::ios_base::failure(fmt::format("Error: Gaussian formchk exit status: {:d}.", WEXITSTATUS(status)));
         }
     } else if (WIFSIGNALED(status)) {
-        throw std::ios_base::failure(fmt::format("Error: Gaussian formchk by signal: {:d}.", WTERMSIG(status)));
+        throw std::ios_base::failure(fmt::format("Error: Gaussian formchk killed by signal: {:d}.", WTERMSIG(status)));
     }
     #else
     if (status) {
