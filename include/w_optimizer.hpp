@@ -8,7 +8,7 @@ enum {coord_x, coord_y, coord_z};
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <filesystem>
+// #include <filesystem>
 #include <vector>
 #include <string>
 #include <regex>

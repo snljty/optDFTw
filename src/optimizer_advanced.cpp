@@ -10,10 +10,13 @@ double Omega_optimizer::step(double w) {
     generate_input("N-1",  1, 1, num_steps <= stable_rounds);
     generate_input("N+1", -1, 1, num_steps <= stable_rounds);
     fmt::print("Running Gaussian for state N   ...\n");
+    std::fflush(stdout);
     run("N");
     fmt::print("Running Gaussian for state N-1 ...\n");
+    std::fflush(stdout);
     run("N-1");
     fmt::print("Running Gaussian for state N+1 ...\n");
+    std::fflush(stdout);
     run("N+1");
     fmt::print("Calculating J**2 ...\n");
     double ret = calc_J_squared();
@@ -21,6 +24,7 @@ double Omega_optimizer::step(double w) {
     std::chrono::duration<double> time_span(std::chrono::duration_cast<std::chrono::duration<double> >(current_time_end - current_time_start));
     fmt::print("w = {:.4f}, J**2 = {:.10f}\n", w, ret);
     fmt::print("Time elapsed for this step: {:.1f} s\n", time_span.count());
+    std::fflush(stdout);
     fmt::print("\n");
     return ret;
 }

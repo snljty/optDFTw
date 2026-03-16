@@ -66,7 +66,8 @@ void Omega_optimizer::formchk(const std::string& prefix) const {
         throw std::ios_base::failure(fmt::format("Error: Gaussian formchk exit status: {:d}.", status));
     }
     #endif
-    std::filesystem::remove(prefix + ".chk");
+    // std::filesystem::remove(prefix + ".chk");
+    std::remove((prefix + ".chk").c_str());
 }
 
 double Omega_optimizer::calc_J_squared() const {
