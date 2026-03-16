@@ -16,8 +16,10 @@ void Omega_optimizer::run(const std::string& prefix) const {
     #ifdef _WIN32
     #define popen _popen
     #define pclose _pclose
+    FILE *pipe = popen(fmt::format("{0:s} {1:s}.gjf {1:s}.out", "g16", prefix).c_str(), "r");
+    #else
+    FILE *pipe = popen(fmt::format("{0:s} '{1:s}.gjf' '{1:s}.out'", "g16", prefix).c_str(), "r");
     #endif
-    FILE *pipe = popen(fmt::format("{0:s} \"{1:s}.gjf\" \"{1:s}.out\"", "g16", prefix).c_str(), "r");
     if (!pipe) throw std::ios_base::failure("Error: cannot execute Gaussian.");
 
     char buf[BUFSIZ];
@@ -44,8 +46,10 @@ void Omega_optimizer::formchk(const std::string& prefix) const {
     #ifdef _WIN32
     #define popen _popen
     #define pclose _pclose
+    FILE *pipe = popen(fmt::format("{0:s} {1:s}.chk {1:s}.fch", "formchk", prefix).c_str(), "r");
+    #else
+    FILE *pipe = popen(fmt::format("{0:s} '{1:s}.chk' '{1:s}.fch'", "formchk", prefix).c_str(), "r");
     #endif
-    FILE *pipe = popen(fmt::format("{0:s} \"{1:s}.chk\" \"{1:s}.fch\"", "formchk", prefix).c_str(), "r");
     if (!pipe) throw std::ios_base::failure("Error: cannot execute Gaussian formchk.");
 
     char buf[BUFSIZ];
