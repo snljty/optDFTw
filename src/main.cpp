@@ -11,6 +11,8 @@ int main(int argc, char const *argv[]) {
         w_lower = std::stod(argv[1]);
         w_upper = std::stod(argv[2]);
         if (argc - 1 == 3) stable_rounds = std::stoi(argv[3]);
+    } else if (argc - 1 == 1) {
+        w_upper = std::stod(argv[1]);
     } else if (argc - 1 != 0) {
         throw std::invalid_argument(fmt::format("Usage: {:s} [w_lower] [w_upper] [stable_rounds]", argv[0]));
     }
