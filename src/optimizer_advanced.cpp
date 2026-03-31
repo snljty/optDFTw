@@ -37,13 +37,14 @@ double Omega_optimizer::minimize_J_squared_callback(unsigned int n, const double
 void Omega_optimizer::optimize() {
     time_start = std::chrono::steady_clock::now();
 
-    nlopt::opt opt(nlopt::LN_NELDERMEAD, 1);
+    nlopt::opt opt(nlopt::LN_BOBYQA, 1);
     opt.set_min_objective(&Omega_optimizer::minimize_J_squared_callback, this);
 
     opt.set_lower_bounds(std::vector<double>{w_lower});
     opt.set_upper_bounds(std::vector<double>{w_upper});
 
     opt.set_xtol_rel(1.E-4);
+    opt.set_maxeval(128);
 
     double min_J_squared;
     std::vector<double> w_init = {w_};
